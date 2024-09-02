@@ -248,6 +248,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import * as XLSX from 'xlsx';
 import logo from '../assets/javier-logo-color.png'
+const apiUrl = import.meta.env.VITE_API_URL;
+axios.defaults.baseURL = apiUrl;
 
 export default {
   name: 'HelloWorld',
@@ -301,7 +303,7 @@ export default {
   methods: {
     async checkSessionStatus() {
       try {
-        const response = await axios.get('http://localhost:3000/session-status');
+        const response = await axios.get('/session-status');
         this.sessionExists = response.data.sessionExists;
 
         if (!this.sessionExists) {
@@ -324,7 +326,7 @@ export default {
       console.log("Métood get QR");
       
       try {
-        const response = await axios.get('http://localhost:3000/qr');
+        const response = await axios.get('/qr');
         this.qrCode = response.data.qrCode;
       } catch (error) {
         console.error('Error al obtener el código QR', error);
@@ -350,7 +352,7 @@ export default {
           if (this.image) {
             formData.append('image', this.image);
           }
-          let {data} = await axios.post('http://localhost:3000/send-message', formData);
+          let {data} = await axios.post('/send-message', formData);
           number.result = data.success;
 
           await new Promise(resolve => setTimeout(resolve, halfInterval));
@@ -374,7 +376,7 @@ export default {
     },
     async logout() {
       try {
-        const response = await axios.post('http://localhost:3000/logout');
+        const response = await axios.post('/logout');
         if (response.data.success) {
           console.log('Sesión cerrada exitosamente.');
           this.sessionExists = false;

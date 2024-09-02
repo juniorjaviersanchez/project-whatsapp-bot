@@ -9,6 +9,8 @@ const path = require('path');
 const SESSION_PATH = path.join(__dirname, '../.wwebjs_auth');
 let isAuthenticated = false;
 
+const apiUrl = process.env.VUE_APP_API_URL;
+
 const app = express();
 app.use(cors());
 app.use(express.json());
