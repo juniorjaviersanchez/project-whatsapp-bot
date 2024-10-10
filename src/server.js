@@ -16,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
 
+
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
