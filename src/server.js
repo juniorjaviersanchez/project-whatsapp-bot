@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const SESSION_PATH = path.join(__dirname, '../.wwebjs_auth');
 let isAuthenticated = false;
+const https = require('https');
 
 const apiUrl = process.env.VUE_APP_API_URL;
 
@@ -109,6 +110,21 @@ app.post('/logout', (req, res) => {
 });
 
 
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
-});
+// Cargar certificados SSL solo en producción
+if (process.env.NODE_ENV === 'production') {
+    const options = {
+        key: fs.readFileSync('/etc/letsencrypt/live/appdora.com/privkey.pem'), // Ruta a tu clave SSL
+        cert: fs.readFileSync('/etc/letsencrypt/live/appdora.com/fullchain.pem'), // Ruta a tu certificado SSL
+    };
+
+    const PORT = process.env.PORT || 3000;
+    const server = https.createServer(options, app); // Usar HTTPS
+    server.listen(PORT, () => {
+        console.log(`Server is running on https://localhost:${PORT}`);
+    });
+} else {
+    // Opción para escuchar en HTTP durante el desarrollo (opcional)
+    app.listen(3000, () => {
+        console.log('Server is running on http://localhost:3000');
+    });
+}
