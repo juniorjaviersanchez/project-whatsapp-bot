@@ -102,6 +102,7 @@
               </v-row>
             </v-card-text>
 
+            
             <v-card-text>
               <v-divider></v-divider>
               <div class="text-caption">Agregar números masivos</div>
